@@ -118,26 +118,25 @@ def layout_oscuro(fig, height=440, legend=True, hovermode="x unified"):
 # 2. CARGA DE DATOS (Excel de la carpeta "datos" O archivo subido)
 # ============================================================
 def localizar_excel_por_defecto():
-    """Busca el Excel/CSV en ../datos sin depender de la letra de unidad."""
+    """Busca el Excel/CSV en la misma carpeta del script o en subcarpetas."""
     carpeta_script = Path(__file__).resolve().parent
-    carpeta_datos = carpeta_script.parent / "datos"
 
-    candidato = carpeta_datos / NOMBRE_ARCHIVO_ESPERADO
+    # 1. Primero busca en la misma carpeta del .py (estructura actual)
+    candidato = carpeta_script / NOMBRE_ARCHIVO_ESPERADO
     if candidato.is_file():
         return candidato
 
-    if carpeta_datos.is_dir():
-        for patron in ("*.xlsx", "*.csv"):
-            encontrados = [
-                Path(f) for f in glob.glob(str(carpeta_datos / patron))
-                if not Path(f).name.startswith("~$")
-            ]
-            if encontrados:
-                return encontrados[0]
+    # 2. Busca cualquier .xlsx o .csv en la misma carpeta
+    for patron in ("*.xlsx", "*.csv"):
+        encontrados = [
+            Path(f) for f in glob.glob(str(carpeta_script / patron))
+            if not Path(f).name.startswith("~$")
+        ]
+        if encontrados:
+            return encontrados[0]
 
-    # búsqueda amplia dentro de la carpeta del proyecto
-    carpeta_proyecto = carpeta_script.parent
-    for f in glob.glob(str(carpeta_proyecto / "**" / "*.xlsx"), recursive=True):
+    # 3. Búsqueda amplia dentro del proyecto (por si está en una subcarpeta)
+    for f in glob.glob(str(carpeta_script / "**" / "*.xlsx"), recursive=True):
         if not Path(f).name.startswith("~$"):
             return Path(f)
     return None

@@ -933,6 +933,9 @@ st.markdown("""
 <div class="main-header">
     <h1>🚆 Control de Desgaste — Ruedas MLL2</h1>
     <p>Alertas · Evolución y pronóstico · Heatmap por tren · Diámetro cada 10,000 km · Ranking · Calendario de reperfilados</p>
+    <p style="margin-top:12px; font-size:0.95rem; color:#7dd3fc; font-weight:500;">
+        Elaborado por el Ing. Alex Peter Mundaca Malca
+    </p>
 </div>
 """, unsafe_allow_html=True)
 
